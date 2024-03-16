@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 export const Context = createContext();
-const serverUrl = "http://localhost:5000/api/v1";
+const serverUrl = "https://social-media-backend-6mz4.onrender.com";
 
 export function StateProvider({ children }) {
   const navigate = useNavigate();

@@ -13,22 +13,15 @@ import { Context } from "../context/StateProvider";
 import { useEffect } from "react";
 
 const UserPosts = () => {
-  const {
-    isAuthenticated,
-    setIsAuthenticated,
-    user,
-    GetUser,
-    posts,
-    userPosts,
-    GetUserPosts,
-  } = useContext(Context);
+  const { isAuthenticated, setIsAuthenticated, user, userPosts } =
+    useContext(Context);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/login");
     }
-  }, []);
+  }, [isAuthenticated,navigate]);
 
   return (
     <div className=" bg-gray-300 h-full w-full">

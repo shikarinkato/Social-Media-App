@@ -1,12 +1,11 @@
 import { motion, useAnimation } from "framer-motion";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import * as Icon from "react-feather";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import UploadCamera from "../assests/img/uploadCamera.png";
 import { Context } from "../context/StateProvider";
 import SearchedUser from "./SearchedUser";
-import _ from "lodash";
 
 function Header() {
   const {
@@ -19,14 +18,13 @@ function Header() {
     searchedUsers,
   } = useContext(Context);
   const [postImg, setPostImg] = useState("");
-  const [showUploadImg, setShowUploadImg] = useState(false);
   const [showUploadModule, setShowUploadModule] = useState(false);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const moduleAnime = useAnimation();
   const moduleBgAnime = useAnimation();
 
-  const handleAnimation = () => {
+  const handleAnimation = useCallback(() => {
     if (showUploadModule === true) {
       moduleAnime.start({ translateY: 0 });
       moduleBgAnime.start({
@@ -45,7 +43,7 @@ function Header() {
         zIndex: "-10",
       });
     }
-  };
+  }, [moduleAnime, moduleBgAnime, showUploadModule]);
 
   const postPostPic = async (pics) => {
     setLoading(true);
@@ -177,7 +175,7 @@ function Header() {
     if (isAuthenticated) {
       handleAnimation();
     }
-  }, [showUploadModule, isAuthenticated]);
+  }, [isAuthenticated, handleAnimation]);
 
   return (
     <header className="p-6 py-6 flex justify-between items-center bg-gray-950 border-b-2 border-teal-700 fixed w-full z-[99] h-36">
@@ -282,7 +280,7 @@ function Header() {
           <form className="flex justify-center items-center flex-col gap-y-6">
             <div className="flex justify-between items-center gap-x-6 w-full ">
               <div className="max-h-[50vh]  flex justify-center items-center py-4">
-                {postImg.length > 0 && !showUploadImg ? (
+                {postImg.length > 0  ? (
                   <img
                     src={postImg}
                     alt="postImg"

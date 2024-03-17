@@ -29,9 +29,7 @@ const UserPage = () => {
       });
     }
   }, [params.userId, GetSearchedUser]);
-  if (user) {
-    let get = user.followings.some((item) => item.id === searchedUser._id);
-  }
+ 
 
   return (
     <div className=" w-full h-full mt-36">

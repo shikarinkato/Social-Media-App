@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../assests/img/logo.png";
 import { ArrowLeftCircle, Eye, EyeOff } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import UploadCamera from "../assests/img/uploadCamera.png";
 import { Context } from "../context/StateProvider";
-import { Icons, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 function SignUp() {
   const [pic, setPic] = useState("");

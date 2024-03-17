@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import UserIcon from "../assests/img/userIcon.png";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../context/StateProvider";

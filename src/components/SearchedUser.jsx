@@ -15,14 +15,18 @@ function SearchedUser({ user }) {
         setSearchedUsers([]);
       }}
     >
-      <div className=" h-[60px] w-[60px]">
+      <div className=" h-[60px] w-[60px] rounded-full overflow-hidden">
         <img
           src={user.pic !== "null" ? user.pic : UserIcon}
           alt="userImg"
           className="h-full w-full object-cover"
         />
       </div>
-      <span className="text-xl font-medium text-white">{user.userName}</span>
+      <span className="text-xl font-medium text-white">
+        {user.userName}
+        <br />
+        <span className=" text-[15px] font-normal">{user.bio}</span>
+      </span>
     </div>
   );
 }

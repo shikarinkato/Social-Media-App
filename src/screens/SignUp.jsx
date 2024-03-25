@@ -63,10 +63,12 @@ function SignUp() {
       );
 
       if (!response.ok) {
+        setLoading(false);
         throw new Error("Image upload failed.");
       } else {
         const jsonData = await response.json();
         setPic(jsonData.url.toString());
+        setLoading(false);
         toast.success("Picture Uploaded Succesfuly", {
           position: "top-center",
           autoClose: 2000,
@@ -76,9 +78,8 @@ function SignUp() {
           theme: "dark",
         });
       }
-
-      setLoading(false);
     } catch (error) {
+      setLoading(false);
       toast.error(error.message, {
         position: "top-center",
         autoClose: 2000,
@@ -88,9 +89,9 @@ function SignUp() {
         theme: "dark",
       });
       console.error("Error uploading image:", error.message);
-      setLoading(false);
     }
   };
+
 
   return (
     <div className=" h-screen w-full bg-gradient-to-b from-teal-800 via-teal-900 to-teal-950">
@@ -102,13 +103,13 @@ function SignUp() {
           <ArrowLeftCircle size={50} stroke="currentcolor" strokeWidth={1} />
           <span className="text-2xl font-normal">Home</span>
         </div>
-        <div className="bg-white rounded-md flex justify-center gap-y-4 items-start flex-col text-teal-700 py-4 px-6">
+        <div className="bg-white rounded-md flex justify-center gap-y-2 sm:gap-y-4 items-start flex-col text-teal-700 py-4 px-6">
           <div className="flex items-center justify-center gap-x-6 w-full">
             <img src={Logo} alt="logo" className="h-[60px] w-[60px]" />
-            <h1 className="text-[4vw] font-semibold">Zingaat</h1>
+            <h1 className=" text-[7vw] sm:text-[4vw] font-semibold">Zingaat</h1>
           </div>
           <form className="flex justify-start items-center flex-col gap-y-4">
-            <div className="h-[20vh]  flex justify-center items-center py-4">
+            <div className="sm:h-[20vh]  flex justify-center items-center py-2 sm:py-4">
               {pic.length > 0 ? (
                 <img
                   src={pic}
@@ -119,9 +120,9 @@ function SignUp() {
                 <>
                   <label
                     htmlFor="postImg"
-                    className=" h-full w-full flex justify-center items-center p-4"
+                    className=" h-full w-full flex justify-center items-center p-2 sm:p-4"
                   >
-                    <span className=" flex justify-center items-center rounded-full bg-gray-300 p-12 cursor-pointer">
+                    <span className=" flex justify-center items-center rounded-full bg-gray-300 p-6 sm:p-12 cursor-pointer">
                       <img
                         src={UploadCamera}
                         alt="uploadcamera"
@@ -142,9 +143,9 @@ function SignUp() {
                 </>
               )}
             </div>
-            <div className="flex justify-between items-center w-full gap-x-4">
+            <div className="flex justify-between items-center w-full gap-x-4 flex-col sm:flex-row gap-y-3">
               <input
-                className="border-[1px]  border-teal-800 rounded-full px-2 h-10 w-[15vw] outline-none"
+                className="border-[1px]  border-teal-800 rounded-full px-2 h-10 w-[80vw] lg:w-[25vw] xl:w-[15vw] outline-none"
                 type="text"
                 name="name"
                 id="name"
@@ -152,7 +153,7 @@ function SignUp() {
                 onChange={(e) => setName(e.target.value)}
               />
               <input
-                className="border-[1px]  border-teal-800 rounded-full px-2 h-10 w-[15vw] outline-none"
+                className="border-[1px]  border-teal-800 rounded-full px-2 h-10 w-[80vw] lg:w-[25vw] xl:w-[15vw] outline-none"
                 type="text"
                 name="username"
                 id="name"
@@ -160,9 +161,9 @@ function SignUp() {
                 onChange={(e) => setUserName(e.target.value)}
               />
             </div>
-            <div className="flex justify-between items-center w-full gap-x-4">
+            <div className="flex justify-between items-center w-full gap-x-4 flex-col sm:flex-row gap-y-3">
               <input
-                className="border-[1px]  border-teal-800 rounded-full px-2 h-10 w-[15vw] outline-none"
+                className="border-[1px]  border-teal-800 rounded-full px-2 h-10 w-[80vw]  lg:w-[25vw] xl:w-[15vw] outline-none"
                 type="email"
                 name="email"
                 id="email"
@@ -171,7 +172,7 @@ function SignUp() {
               />
               <div className="text-teal-700 relative flex justify-center items-center">
                 <input
-                  className="border-[1px]  border-teal-800 rounded-full px-2 h-10 w-[15vw] outline-none"
+                  className="border-[1px]  border-teal-800 rounded-full px-2 h-10 w-[80vw] lg:w-[25vw] xl:w-[15vw] outline-none"
                   type={showPass ? "text" : "password"}
                   name="pass"
                   id="pass"
@@ -208,7 +209,7 @@ function SignUp() {
             disabled={loading ? true : false}
             className="py-2 px-5 rounded-md bg-teal-700 text-white text-2xl font-semibold w-full"
           >
-            Sign Up
+            {loading ? "Loading..." : "Sign Up"}
           </button>
           <div className="text-center mt-2 w-full">
             <div className="flex justify-center items-center text-[20px]">

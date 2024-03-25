@@ -7,11 +7,9 @@ import { StateProvider } from "./context/StateProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <Router>
-      <StateProvider children={<App />} />
-    </Router>
-  </React.StrictMode>
+  <Router>
+    <StateProvider children={<App />} />
+  </Router>
 );
 
 // If you want to start measuring performance in your app, pass a function

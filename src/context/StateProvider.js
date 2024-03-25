@@ -1,9 +1,12 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import UserIcon from "../assests/img/userIcon.png";
 
 export const Context = createContext();
-const serverUrl = "https://social-media-backend-6mz4.onrender.com";
+let serverUrl;
+serverUrl = "https://social-media-backend-6mz4.onrender.com";
+// serverUrl = "http://localhost:5000/api/v1";
 
 export function StateProvider({ children }) {
   const navigate = useNavigate();
@@ -20,7 +23,7 @@ export function StateProvider({ children }) {
     setLoading(true);
 
     try {
-      if (!name || !username || !email || !password || !bio || !pic) {
+      if (!name || !username || !email || !password || !bio) {
         setLoading(false);
         toast.error("Required Fields are Missing", {
           position: "top-center",
@@ -30,6 +33,9 @@ export function StateProvider({ children }) {
           progress: undefined,
           theme: "dark",
         });
+        if (!pic) {
+          pic = UserIcon;
+        }
       } else {
         let res = await fetch(`${serverUrl}/user/add`, {
           method: "POST",
@@ -59,6 +65,7 @@ export function StateProvider({ children }) {
           });
         } else if (res.status === 401) {
           navigate("/login");
+          setLoading(false);
           toast.error(data.message, {
             position: "top-center",
             autoClose: 2000,
@@ -90,6 +97,8 @@ export function StateProvider({ children }) {
         progress: undefined,
         theme: "dark",
       });
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -166,10 +175,12 @@ export function StateProvider({ children }) {
         progress: undefined,
         theme: "dark",
       });
+    } finally {
+      setLoading(false);
     }
   }
 
-  async function GetUser() {
+  let GetUser = useCallback(async function () {
     setLoading(true);
     let token = JSON.parse(sessionStorage.getItem("token"));
     try {
@@ -194,6 +205,7 @@ export function StateProvider({ children }) {
           theme: "dark",
         });
       } else if (res.status === 401) {
+        setLoading(false);
         toast.error(data.message, {
           position: "top-center",
           autoClose: 2000,
@@ -224,10 +236,12 @@ export function StateProvider({ children }) {
         progress: undefined,
         theme: "dark",
       });
+    } finally {
+      setLoading(false);
     }
-  }
+  }, []);
 
-  async function FetchGlobalPosts() {
+  let FetchGlobalPosts = useCallback(async function () {
     setLoading(true);
     try {
       let res = await fetch(`${serverUrl}/posts/global`, {
@@ -238,6 +252,7 @@ export function StateProvider({ children }) {
       });
       let data = await res.json();
       if (data.success === true) {
+        setLoading(false);
         setPosts(data.totalPosts);
         toast.success(data.message, {
           position: "top-center",
@@ -249,17 +264,17 @@ export function StateProvider({ children }) {
         });
       } else {
         setLoading(false);
-        toast.error(data.message, {
-          position: "top-center",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          progress: undefined,
-          theme: "dark",
-        });
+        throw new Error(data.message);
+        // toast.error(data.message, {
+        //   position: "top-center",
+        //   autoClose: 2000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   progress: undefined,
+        //   theme: "dark",
+        // });
       }
     } catch (error) {
-      console.log(error);
       setLoading(false);
       toast.error(error.message, {
         position: "top-center",
@@ -269,14 +284,16 @@ export function StateProvider({ children }) {
         progress: undefined,
         theme: "dark",
       });
+    } finally {
+      setLoading(false);
     }
-  }
+  }, []);
 
-  async function createPost(img, interactions) {
+  async function createPost(img, interactions, postCaption) {
     setLoading(true);
     let token = JSON.parse(sessionStorage.getItem("token"));
     try {
-      if (!img || !interactions) {
+      if (!interactions) {
         setLoading(false);
         toast.error("Required Fields are Missing", {
           position: "top-center",
@@ -296,6 +313,7 @@ export function StateProvider({ children }) {
           body: JSON.stringify({
             img,
             interactions,
+            postCaption,
           }),
         });
         let data = await res.json();
@@ -310,6 +328,7 @@ export function StateProvider({ children }) {
             theme: "dark",
           });
         } else if (res.status === 401) {
+          setLoading(false);
           toast.error(data.message, {
             position: "top-center",
             autoClose: 2000,
@@ -318,7 +337,6 @@ export function StateProvider({ children }) {
             progress: undefined,
             theme: "dark",
           });
-          setLoading(false);
         } else {
           setLoading(false);
           toast.error(data.message, {
@@ -342,10 +360,12 @@ export function StateProvider({ children }) {
         progress: undefined,
         theme: "dark",
       });
+    } finally {
+      setLoading(false);
     }
   }
 
-  async function GetUserPosts(userid) {
+  let GetUserPosts = useCallback(async function (userid) {
     setLoading(true);
     let token = JSON.parse(sessionStorage.getItem("token"));
     try {
@@ -380,6 +400,7 @@ export function StateProvider({ children }) {
             theme: "dark",
           });
         } else if (res.status === 401) {
+          setLoading(false);
           toast.error(data.message, {
             position: "top-center",
             autoClose: 2000,
@@ -388,21 +409,19 @@ export function StateProvider({ children }) {
             progress: undefined,
             theme: "dark",
           });
-          setLoading(false);
         } else {
           setLoading(false);
-          toast.error(data.message, {
-            position: "top-center",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            progress: undefined,
-            theme: "dark",
-          });
+          // toast.error(data.message, {
+          //   position: "top-center",
+          //   autoClose: 2000,
+          //   hideProgressBar: false,
+          //   closeOnClick: true,
+          //   progress: undefined,
+          //   theme: "dark",
+          // });
         }
       }
     } catch (error) {
-      console.log(error);
       setLoading(false);
       toast.error(error.message, {
         position: "top-center",
@@ -412,8 +431,10 @@ export function StateProvider({ children }) {
         progress: undefined,
         theme: "dark",
       });
+    } finally {
+      setLoading(false);
     }
-  }
+  }, []);
 
   async function SearchUser(query) {
     setLoading(true);
@@ -448,6 +469,7 @@ export function StateProvider({ children }) {
             theme: "dark",
           });
         } else if (res.status === 401) {
+          setLoading(false);
           toast.error(data.message, {
             position: "top-center",
             autoClose: 2000,
@@ -456,7 +478,6 @@ export function StateProvider({ children }) {
             progress: undefined,
             theme: "dark",
           });
-          setLoading(false);
         } else {
           setLoading(false);
           toast.error(data.message, {
@@ -480,10 +501,12 @@ export function StateProvider({ children }) {
         progress: undefined,
         theme: "dark",
       });
+    } finally {
+      setLoading(false);
     }
   }
 
-  async function GetSearchedUser(userId) {
+  let GetSearchedUser = useCallback(async function (userId) {
     setLoading(true);
     try {
       if (!userId) {
@@ -517,6 +540,7 @@ export function StateProvider({ children }) {
             theme: "dark",
           });
         } else if (res.status === 401) {
+          setLoading(false);
           toast.error(data.message, {
             position: "top-center",
             autoClose: 2000,
@@ -548,11 +572,14 @@ export function StateProvider({ children }) {
         progress: undefined,
         theme: "dark",
       });
+    } finally {
+      setLoading(false);
     }
-  }
+  }, []);
 
   async function ChangeFollowings(anotherUser, action, pic) {
     setLoading(true);
+    console.log(anotherUser);
     let token = JSON.parse(sessionStorage.getItem("token"));
     try {
       if (!anotherUser || !action || !pic) {
@@ -590,6 +617,83 @@ export function StateProvider({ children }) {
             theme: "dark",
           });
         } else if (res.status === 401) {
+          setLoading(false);
+          toast.error(data.message, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        } else {
+          setLoading(false);
+          toast.error(data.message, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      toast.error(error.message, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function ChangeLikes(action, postId, userId, byUser) {
+    setLoading(true);
+    let token = JSON.parse(sessionStorage.getItem("token"));
+    try {
+      if (!action || !postId || !userId || !byUser) {
+        setLoading(false);
+        toast.error("Required Fields are Missing", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
+        let res = await fetch(`${serverUrl}/interactions/like`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            action,
+            postId,
+            userId,
+            byUser,
+          }),
+        });
+        let data = await res.json();
+        if (res.ok) {
+          setLoading(false);
+          toast.success(data.message, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        } else if (res.status === 401) {
           toast.error(data.message, {
             position: "top-center",
             autoClose: 2000,
@@ -622,6 +726,158 @@ export function StateProvider({ children }) {
         progress: undefined,
         theme: "dark",
       });
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function AddComment(comment, postId, userId, anotherUser) {
+    setLoading(true);
+    let token = JSON.parse(sessionStorage.getItem("token"));
+    try {
+      if (!comment || !postId || !userId || !anotherUser) {
+        setLoading(false);
+        toast.error("Required Fields are Missing", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
+        let res = await fetch(`${serverUrl}/interactions/comment`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            comment,
+            postId,
+            userId,
+            anotherUser,
+          }),
+        });
+        let data = await res.json();
+        if (res.ok) {
+          setLoading(false);
+          toast.success(data.message, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        } else if (res.status === 401) {
+          toast.error(data.message, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          setLoading(false);
+        } else {
+          setLoading(false);
+          toast.error(data.message, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      toast.error(error.message, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function DeletePost(postId) {
+    setLoading(true);
+    let token = JSON.parse(sessionStorage.getItem("token"));
+    try {
+      if (!postId) {
+        setLoading(false);
+        toast.error("Required Fields are Missing", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
+        let res = await fetch(`${serverUrl}/posts/${postId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        let data = await res.json();
+        console.log(data);
+        console.log(res);
+        if (data.success === true) {
+          setLoading(false);
+          toast.success(data.message, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        } else if (res.status === 401) {
+          setLoading(false);
+          toast.error(data.message, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        } else {
+          setLoading(false);
+          toast.error(data.message, {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            progress: undefined,
+            theme: "dark",
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      toast.error(error.message, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -652,6 +908,9 @@ export function StateProvider({ children }) {
         SearchUser,
         GetSearchedUser,
         ChangeFollowings,
+        ChangeLikes,
+        AddComment,
+        DeletePost,
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
@@ -11,6 +11,7 @@ import UserPage from "./screens/UserPage";
 import UserPosts from "./screens/UserPosts";
 
 function App() {
+  const location = useLocation();
   const {
     isAuthenticated,
     setIsAuthenticated,
@@ -18,31 +19,32 @@ function App() {
     GetUserPosts,
     user,
     loading,
+    FetchGlobalPosts,
   } = useContext(Context);
+
   useEffect(() => {
     let token = JSON.parse(sessionStorage.getItem("token"));
     if (token) {
       setIsAuthenticated(true);
-
       GetUser();
-      if (user._id) {
-        GetUserPosts(user._id);
-      }
     } else {
       setIsAuthenticated(false);
     }
-  }, [
-    isAuthenticated,
-    loading,
-    GetUser,
-    GetUserPosts,
-    setIsAuthenticated,
-    user._id,
-  ]);
+  }, [isAuthenticated, loading, GetUser, setIsAuthenticated]);
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      GetUserPosts(user._id);
+    }
+
+    FetchGlobalPosts();
+  }, [loading]);
 
   return (
     <div className=" flex h-full w-full">
-      <Header />
+      {location.pathname !== "/signup" && location.pathname !== "/login" && (
+        <Header />
+      )}
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/user/posts" element={<UserPosts />} />

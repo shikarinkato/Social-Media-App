@@ -20,40 +20,39 @@ function SignUp() {
 
   const postProfilePic = async (pics) => {
     setLoading(true);
-
-    if (pics === undefined) {
-      toast.error("Please Select an Image", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        progress: undefined,
-        theme: "dark",
-      });
-      setLoading(false);
-      return;
-    }
-
-    if (!pics || !pics.type.startsWith("image/")) {
-      toast.error("Please Upload an Image", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        progress: undefined,
-        theme: "dark",
-      });
-
-      setLoading(false);
-      return;
-    }
-
-    const data = new FormData();
-    data.append("file", pics);
-    data.append("upload_preset", "Social-Media-App");
-    data.append("cloud_name", "shikarinkato");
-
     try {
+      if (pics === undefined) {
+        toast.error("Please Select an Image", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        return;
+      }
+
+      if (!pics || !pics.type.startsWith("image/")) {
+        toast.error("Please Upload an Image", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          progress: undefined,
+          theme: "dark",
+        });
+
+        return;
+      }
+
+      const data = new FormData();
+      data.append("file", pics);
+      data.append("quality", "auto");
+      data.append("fetch_format", "auto");
+      data.append("upload_preset", "Social-Media-App");
+      data.append("cloud_name", "shikarinkato");
+
       const response = await fetch(
         `https://api.cloudinary.com/v1_1/shikarinkato/image/upload`,
         {
@@ -63,12 +62,11 @@ function SignUp() {
       );
 
       if (!response.ok) {
-        setLoading(false);
         throw new Error("Image upload failed.");
       } else {
         const jsonData = await response.json();
+        console.log(jsonData);
         setPic(jsonData.url.toString());
-        setLoading(false);
         toast.success("Picture Uploaded Succesfuly", {
           position: "top-center",
           autoClose: 2000,
@@ -79,7 +77,6 @@ function SignUp() {
         });
       }
     } catch (error) {
-      setLoading(false);
       toast.error(error.message, {
         position: "top-center",
         autoClose: 2000,
@@ -89,9 +86,10 @@ function SignUp() {
         theme: "dark",
       });
       console.error("Error uploading image:", error.message);
+    } finally {
+      setLoading(false);
     }
   };
-
 
   return (
     <div className=" h-screen w-full bg-gradient-to-b from-teal-800 via-teal-900 to-teal-950">
@@ -127,6 +125,7 @@ function SignUp() {
                         src={UploadCamera}
                         alt="uploadcamera"
                         className="h-[60px] w-[60px] object-contain"
+                        loading="lazy"
                       />
                     </span>
                   </label>

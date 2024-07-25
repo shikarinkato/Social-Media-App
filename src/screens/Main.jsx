@@ -5,21 +5,16 @@ import Sidebar from "../components/Sidebar";
 
 import { Context } from "../context/StateProvider";
 import AdvertisementContainer from "./AdvertisementContainer";
+import { Loader } from "react-feather";
 
 function Main() {
-  const { isAuthenticated, setIsAuthenticated, posts } = useContext(Context);
+  const { posts, loading, setLoading } = useContext(Context);
 
-  useEffect(() => {
-    let token = JSON.parse(sessionStorage.getItem("token"));
-    if (token) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
-  }, [isAuthenticated, setIsAuthenticated]);
-
+  if (loading) {
+    return <Loader />;
+  }
   return (
-    <div className=" bg-gray-300 h-full w-full">
+    <section className=" bg-gray-300 h-full w-full">
       <div className="flex items-start justify-start overflow-hidden ">
         <Sidebar />
         <div className="w-full h-full xl:min-h-screen overflow-y-auto  bg-gray-300 relative top-[9rem] xl:top-[8.9rem] 2xl:top-[8.5rem] left-[5%]  lg:left-[30%] xl:left-[25%]  2xl:left-[22%] mb-48 flex justify-between ">
@@ -29,7 +24,9 @@ function Main() {
             </div>
             <div className=" overflow-y-auto w-full flex justify-start items-start self-start flex-col  gap-y-6 ">
               {posts.length > 0 ? (
-                posts.map((item, idx) => <Posts item={item} key={idx} />)
+                posts.map((item, idx) => (
+                  <Posts item={item} key={idx * 0.25 * 0.123} />
+                ))
               ) : (
                 <div className="h-[35rem]  w-full flex justify-center items-center flex-col text-gray-600">
                   <h1 className="text-[8vw] font-bold opacity-80">(='X'=)</h1>
@@ -40,10 +37,10 @@ function Main() {
               )}
             </div>
           </div>
-         <AdvertisementContainer/>
+          <AdvertisementContainer />
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

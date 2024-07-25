@@ -11,21 +11,14 @@ import { Context } from "../context/StateProvider";
 import AdvertisementContainer from "./AdvertisementContainer";
 
 const UserPosts = () => {
-  const { isAuthenticated, setIsAuthenticated, userPosts } =
-    useContext(Context);
+  const { isAuthenticated, userPosts } = useContext(Context);
   const navigate = useNavigate();
 
   useEffect(() => {
-    let token = JSON.parse(sessionStorage.getItem("token"));
-    if (token) {
-      setIsAuthenticated(true);
-    } else {
-      if (!isAuthenticated) {
-        navigate("/login");
-      }
+    if (!isAuthenticated) {
+      navigate("/login");
     }
-  }, [isAuthenticated, navigate, setIsAuthenticated]);
-  console.log(isAuthenticated);
+  }, [isAuthenticated]);
 
   return (
     <div className=" bg-gray-300 h-full w-full">

@@ -9,36 +9,40 @@ import Main from "./screens/Main";
 import SignUp from "./screens/SignUp";
 import UserPage from "./screens/UserPage";
 import UserPosts from "./screens/UserPosts";
+import Loader from "./components/Loader";
 
 function App() {
   const location = useLocation();
   const {
-    isAuthenticated,
-    setIsAuthenticated,
     GetUser,
     GetUserPosts,
-    user,
-    loading,
+    posts,
     FetchGlobalPosts,
+    isAuthenticated,
+    setIsAuthenticated,
+    loading,
+    user,
   } = useContext(Context);
 
   useEffect(() => {
-    let token = JSON.parse(sessionStorage.getItem("token"));
+    let token = sessionStorage.getItem("token");
     if (token) {
       setIsAuthenticated(true);
-      GetUser();
     } else {
       setIsAuthenticated(false);
     }
-  }, [isAuthenticated, loading, GetUser, setIsAuthenticated]);
+  }, []);
 
   useEffect(() => {
-    if (isAuthenticated && user) {
-      GetUserPosts(user._id);
+    if (isAuthenticated) {
+      GetUser();
+      if (user) {
+        GetUserPosts(user._id);
+      }
     }
 
     FetchGlobalPosts();
-  }, [loading]);
+  }, [isAuthenticated]);
 
   return (
     <div className=" flex h-full w-full">

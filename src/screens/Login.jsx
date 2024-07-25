@@ -15,7 +15,7 @@ function Login() {
     if (isAuthenticated) {
       navigate("/");
     }
-  });
+  }, [isAuthenticated]);
 
   return (
     <div className=" h-screen w-full bg-gradient-to-b from-teal-800 via-teal-900 to-teal-950">
@@ -29,7 +29,12 @@ function Login() {
         </div>
         <div className="bg-white rounded-md flex justify-center gap-y-4 items-center flex-col text-teal-700 py-4 px-6">
           <div className="flex items-center justify-center gap-x-6 w-full">
-            <img src={Logo} alt="logo" className="h-[60px] w-[60px]" />
+            <img
+              src={Logo}
+              alt="logo"
+              className="h-[60px] w-[60px]"
+              loading="lazy"
+            />
             <h1 className=" text-[8vw] sm:text-[4vw] font-semibold">Zingaat</h1>
           </div>
           <div className="w-full">

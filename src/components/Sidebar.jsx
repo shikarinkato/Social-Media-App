@@ -10,7 +10,6 @@ const Sidebar = () => {
   const { isAuthenticated, setIsAuthenticated, user, userPosts } =
     useContext(Context);
   const navigate = useNavigate();
-
   return (
     <div className="hidden  lg:flex fixed xl:h-screen h-full  z-[97] top-[9rem] xl:top-[8.9rem] 2xl:top-[8.5rem] left-0">
       {isAuthenticated ? (

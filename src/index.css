@@ -9,14 +9,55 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-display: swap;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+  font-display: swap;
 }
 
 .skeleton1Bg {
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(10px);
+}
+
+.skeleton {
+  background: rgba(255, 255, 255, 0.3);
+  animation: animateLoading 2s ease infinite;
+}
+
+@keyframes animateLoading {
+  0% {
+    background: rgb(255, 254, 254);
+  }
+  50% {
+    background: rgb(186, 177, 177);
+  }
+  100% {
+    background: rgb(255, 255, 255);
+  }
+}
+
+.loaderCircle {
+  height: 100px;
+  width: 100px;
+  border: 15px solid gray;
+  border-radius: 50%;
+  border-top: 15px solid teal;
+  animation: rotateLoader 1s infinite ease;
+}
+
+@keyframes rotateLoader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.allComments {
+  scrollbar-width: none;
 }

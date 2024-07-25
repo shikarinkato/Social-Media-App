@@ -19,8 +19,6 @@ const UserPage = () => {
     searchedUserPosts,
     ChangeFollowings,
     user,
-    userPosts,
-    setIsAuthenticated,
   } = useContext(Context);
 
   const unfollowBox = useAnimation();
@@ -38,7 +36,7 @@ const UserPage = () => {
         theme: "dark",
       });
     }
-  }, [params.userId, GetSearchedUser]);
+  }, [params.userId]);
 
   return (
     <div className=" w-full h-full mt-36">

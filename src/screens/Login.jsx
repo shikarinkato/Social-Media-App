@@ -15,7 +15,7 @@ function Login() {
     if (isAuthenticated) {
       navigate("/");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className=" h-screen w-full bg-gradient-to-b from-teal-800 via-teal-900 to-teal-950">

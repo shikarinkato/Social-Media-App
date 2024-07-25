@@ -1,19 +1,12 @@
 import { motion, useAnimation } from "framer-motion";
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import * as Icon from "react-feather";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import UploadCamera from "../assests/img/uploadCamera.png";
+import UserIcon from "../assests/img/userIcon.png";
 import { Context } from "../context/StateProvider";
 import SearchedUser from "./SearchedUser";
-import UserIcon from "../assests/img/userIcon.png";
-import Sidebar from "./Sidebar";
 
 function Header() {
   const {
@@ -26,7 +19,6 @@ function Header() {
     searchedUsers,
     userPosts,
     setIsAuthenticated,
-    GetUserPosts,
   } = useContext(Context);
 
   const [postImg, setPostImg] = useState("");
@@ -40,27 +32,6 @@ function Header() {
   const drawerAnimation = useAnimation();
   let searchGap = useRef("");
   let timer = useRef(0);
-
-  const handleAnimation = useCallback(() => {
-    if (showUploadModule === true) {
-      moduleAnime.start({ translateY: 0 });
-      moduleBgAnime.start({
-        display: "flex",
-        background: "rgba(255,255,255,0.1)",
-        backdropFilter: "blur(10px)",
-        zIndex: "99",
-      });
-    } else {
-      moduleAnime.start({ translateY: "-180%" });
-      moduleBgAnime.start({
-        display: "none",
-        background: "transparent",
-        backdropFilter: "unset",
-        position: "absolute",
-        zIndex: "-10",
-      });
-    }
-  }, [moduleAnime, moduleBgAnime, showUploadModule]);
 
   const postPostPic = async (pics) => {
     setLoading(true);
@@ -186,6 +157,27 @@ function Header() {
   });
 
   useEffect(() => {
+    const handleAnimation = () => {
+      if (showUploadModule === true) {
+        moduleAnime.start({ translateY: 0 });
+        moduleBgAnime.start({
+          display: "flex",
+          background: "rgba(255,255,255,0.1)",
+          backdropFilter: "blur(10px)",
+          zIndex: "99",
+        });
+      } else {
+        moduleAnime.start({ translateY: "-180%" });
+        moduleBgAnime.start({
+          display: "none",
+          background: "transparent",
+          backdropFilter: "unset",
+          position: "absolute",
+          zIndex: "-10",
+        });
+      }
+    };
+
     if (isAuthenticated) {
       handleAnimation();
       if (showDrawer) {
@@ -194,6 +186,7 @@ function Header() {
         drawerAnimation.start({ translateX: "-100%" });
       }
     }
+
     window.addEventListener("scroll", scrollHandler);
 
     return () => {
@@ -231,9 +224,6 @@ function Header() {
     return () => {
       clearTimeout(timer.current);
     };
-  }
-  if (loading) {
-    return <div></div>;
   }
 
   return (
@@ -296,7 +286,7 @@ function Header() {
                       className=" h-[50px] w-[50px] rounded-full"
                       height={50}
                       width={50}
-                      alt="normal white user icon because user ain't have image"
+                      alt="user_profile_pic"
                     />
                     <div className="flex justify-center items-center flex-col">
                       <span className="text-2xl font-semibold">

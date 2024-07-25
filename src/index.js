@@ -1,19 +1,16 @@
-import React, { Suspense } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
 import { BrowserRouter as Router } from "react-router-dom";
+import App from "./App";
 import { StateProvider } from "./context/StateProvider";
-import Loader from "./components/Loader";
+import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    {/* <Suspense fallback={<Loader />}> */}
     <Router>
       <StateProvider children={<App />} />
     </Router>
-    {/* </Suspense> */}
   </React.StrictMode>
 );
 

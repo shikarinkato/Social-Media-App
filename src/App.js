@@ -9,18 +9,15 @@ import Main from "./screens/Main";
 import SignUp from "./screens/SignUp";
 import UserPage from "./screens/UserPage";
 import UserPosts from "./screens/UserPosts";
-import Loader from "./components/Loader";
 
 function App() {
   const location = useLocation();
   const {
     GetUser,
     GetUserPosts,
-    posts,
     FetchGlobalPosts,
     isAuthenticated,
     setIsAuthenticated,
-    loading,
     user,
   } = useContext(Context);
 

@@ -1,14 +1,14 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 
 import Posts from "../components/Posts";
 import Sidebar from "../components/Sidebar";
 
+import { Loader } from "react-feather";
 import { Context } from "../context/StateProvider";
 import AdvertisementContainer from "./AdvertisementContainer";
-import { Loader } from "react-feather";
 
 function Main() {
-  const { posts, loading, setLoading } = useContext(Context);
+  const { posts, loading } = useContext(Context);
 
   if (loading) {
     return <Loader />;

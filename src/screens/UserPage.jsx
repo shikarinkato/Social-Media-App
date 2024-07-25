@@ -1,13 +1,10 @@
+import { motion, useAnimation } from "framer-motion";
 import React, { useContext, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Context } from "../context/StateProvider";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import UserIcon from "../assests/img/userIcon.png";
-import RecentFollowers from "../components/RecentFollower";
-import RecentComments from "../components/RecentComments";
-import { LogOut } from "react-feather";
-import { motion, useAnimation } from "framer-motion";
 import Sidebar from "../components/Sidebar";
+import { Context } from "../context/StateProvider";
 
 const UserPage = () => {
   const params = useParams();

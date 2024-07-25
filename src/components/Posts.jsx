@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import * as Icon from "react-feather";
 import { useNavigate } from "react-router-dom";
 import UserIcon from "../assests/img/userIcon.png";
 import { Context } from "../context/StateProvider";
-import { name } from "@cloudinary/url-gen/actions/namedTransformation";
 
 function Posts({ item }) {
   const [showCommentBox, setShowCommentBox] = useState(false);
@@ -18,9 +17,8 @@ function Posts({ item }) {
     DeletePost,
     FetchGlobalPosts,
     loading,
-    setLoading,
   } = useContext(Context);
-  const postRef = useRef();
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,12 +39,12 @@ function Posts({ item }) {
       console.log(e.target);
       if (
         e.target.getAttribute("name") ||
-        e.target.closest("[name=like]").getAttribute("name") == "like"
+        e.target.closest("[name=like]").getAttribute("name") === "like"
       ) {
         console.log("Like Container");
         FetchGlobalPosts();
         clearTimeout(timer);
-      } else if (e.target.getAttribute("name") == "like") {
+      } else if (e.target.getAttribute("name") === "like") {
         console.log("Delete");
         FetchGlobalPosts();
         clearTimeout(timer);
@@ -142,7 +140,9 @@ function Posts({ item }) {
           <div className="flex justify-start items-start flex-col gap-2 py-3 w-[80%]">
             {Array.from({ length: 3 }).map((i, idx) => (
               <span
-                style={{ width: `${idx == 0 || idx == 2 ? "200px" : "170px"}` }}
+                style={{
+                  width: `${idx === 0 || idx === 2 ? "200px" : "170px"}`,
+                }}
                 key={idx * 0.005 * 0.02341}
                 className={`text-start  w-full ${
                   loading ? `h-[10px]  skeleton rounded-lg inline-block` : ""

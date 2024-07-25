@@ -5,8 +5,8 @@ import UserIcon from "../assests/img/userIcon.png";
 
 export const Context = createContext();
 let serverUrl;
-// serverUrl = "https://social-media-backend-6mz4.onrender.com";
-serverUrl = "http://localhost:5000/api/v1";
+serverUrl = "https://social-media-backend-6mz4.onrender.com";
+// serverUrl = "http://localhost:5000/api/v1";
 
 export function StateProvider({ children }) {
   const navigate = useNavigate();
@@ -18,7 +18,6 @@ export function StateProvider({ children }) {
   const [searchedUserPosts, setSearchedUserPosts] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [searchedUser, setSearchedUser] = useState("");
-  const [token, setToken] = useState("");
 
   async function createAccount(name, username, email, password, bio, pic) {
     setLoading(true);

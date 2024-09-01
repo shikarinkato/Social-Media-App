@@ -5,7 +5,7 @@ import UserIcon from "../assests/img/userIcon.png";
 
 export const Context = createContext();
 let serverUrl;
-serverUrl = "https://social-media-backend-6mz4.onrender.com";
+serverUrl = "https://social-media-backend-6mz4.onrender.com/api/v1";
 // serverUrl = "http://localhost:5000/api/v1";
 
 export function StateProvider({ children }) {

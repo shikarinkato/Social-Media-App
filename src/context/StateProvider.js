@@ -5,8 +5,8 @@ import UserIcon from "../assests/img/userIcon.png";
 
 export const Context = createContext();
 let serverUrl;
-serverUrl = "https://social-media-backend-6mz4.onrender.com";
-// serverUrl = "http://localhost:5000/api/v1";
+// serverUrl = "https://social-media-backend-tau-six.vercel.app/";
+serverUrl = "http://localhost:5000/api/v1";
 
 export function StateProvider({ children }) {
   const navigate = useNavigate();
@@ -346,8 +346,6 @@ export function StateProvider({ children }) {
 
   let GetUserPosts = useCallback(async function (userid) {
     setLoading(true);
-    console.log("User Posts");
-
 
     let token = JSON.parse(sessionStorage.getItem("token"));
     try {
@@ -371,6 +369,7 @@ export function StateProvider({ children }) {
         });
         let data = await res.json();
         if (res.ok) {
+          console.log(data);
           setUserPosts(data.updatedPostsArr);
           toast.success(data.message, {
             position: "top-center",
@@ -416,7 +415,6 @@ export function StateProvider({ children }) {
 
   async function SearchUser(query) {
     setLoading(true);
-    console.log("Search User");
 
     try {
       if (!query) {
@@ -437,6 +435,7 @@ export function StateProvider({ children }) {
         });
         let data = await res.json();
         if (data.success === true) {
+          console.log(data);
           setSearchedUsers(data.searchedUsers);
           toast.success(data.message, {
             position: "top-center",
@@ -553,8 +552,10 @@ export function StateProvider({ children }) {
     console.log("Change Folowings");
 
     let token = JSON.parse(sessionStorage.getItem("token"));
+    console.log(anotherUser, action, pic);
+
     try {
-      if (!anotherUser || !action || !pic) {
+      if (!anotherUser || !action) {
         toast.error("Required Fields are Missing", {
           position: "top-center",
           autoClose: 2000,
@@ -578,6 +579,7 @@ export function StateProvider({ children }) {
           }),
         });
         let data = await res.json();
+        console.log(data);
         if (res.ok) {
           toast.success(data.message, {
             position: "top-center",

@@ -65,17 +65,18 @@ function Header() {
       data.append("cloud_name", "shikarinkato");
 
       const response = await fetch(
-        `https://api.cloudinary.com/v1_1/shikarinkato/image/upload/f_auto/q_auto`,
+        `https://api.cloudinary.com/v1_1/shikarinkato/image/upload/`,
         {
           method: "post",
           body: data,
         }
       );
-
+      console.log(response);
       if (!response.ok) {
         throw new Error("Image upload failed.");
       } else {
         const jsonData = await response.json();
+        console.log(jsonData);
         setPostImg(jsonData.url.toString());
         toast.success("Picture Uploaded Succesfuly", {
           position: "top-center",
@@ -209,7 +210,7 @@ function Header() {
     let date = new Date();
     if (searchGap.current < date.getTime()) {
       searchGap.current = date.getTime() + 400;
-      setSearch(e.target);
+      setSearch(e.target.value);
     }
   }
 

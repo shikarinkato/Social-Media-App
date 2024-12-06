@@ -161,14 +161,18 @@ const UserPage = () => {
             <div className=" w-full border-t-[1px] border-gray-900">
               {searchedUserPosts && searchedUserPosts.length > 0 ? (
                 <div className="grid grid-cols-3 gap-x-3 gap-y-2 mt-3 ">
-                  {searchedUserPosts.map((item, idx) => (
-                    <img
-                      key={idx}
-                      src={item.img}
-                      className="h-[120px] w-[120px] object-contain bg-gray-300"
-                      alt="searchedImg"
-                    />
-                  ))}
+                  {searchedUserPosts.map((item) => {
+                    let url = item.img.split("upload");
+                    url = url[0] + "upload/q_auto" + url[1];
+                    return (
+                      <img
+                        key={item._id}
+                        src={url}
+                        className="h-[120px] w-[120px] object-contain bg-gray-300 text-[10px] break-words"
+                        alt="searchedImg"
+                      />
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="bg-gray-300 py-8 w-full flex justify-center items-center px-4 flex-col text-gray-400">

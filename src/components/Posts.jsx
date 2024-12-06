@@ -18,7 +18,7 @@ function Posts({ item }) {
     FetchGlobalPosts,
     loading,
   } = useContext(Context);
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,21 +36,30 @@ function Posts({ item }) {
   function handleUpdateClick(e) {
     e.stopPropagation();
     let timer = setTimeout(() => {
-      console.log(e.target);
       if (
+        e.target.getAttribute("name") ||
+        e.target.closest("[name=like]") == null
+      ) {
+        console.log("null");
+      } else if (
         e.target.getAttribute("name") ||
         e.target.closest("[name=like]").getAttribute("name") === "like"
       ) {
         console.log("Like Container");
         FetchGlobalPosts();
         clearTimeout(timer);
-      } else if (e.target.getAttribute("name") === "like") {
+      } else if (e.target.getAttribute("name") === "delete") {
         console.log("Delete");
         FetchGlobalPosts();
         clearTimeout(timer);
+      } else {
+        console.log("Null");
       }
     }, 1000);
   }
+
+  let imgurl = item.img ? item.img.split("upload") : null;
+  imgurl = imgurl !== null ? imgurl[0] + "upload/q_auto" + imgurl[1] : null;
 
   return (
     <section
@@ -160,11 +169,11 @@ function Posts({ item }) {
           </span>
         )}
 
-        {loading || item.img === null ? (
+        {loading && imgurl === null ? (
           <span className=" max-h-[400px] h-[200px] w-[306px] skeleton"></span>
-        ) : item.img ? (
+        ) : imgurl ? (
           <img
-            src={item.img}
+            src={imgurl}
             alt="postImg"
             height={400}
             width={400}
